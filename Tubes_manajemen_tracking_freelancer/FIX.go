@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 const MAX = 100
 
@@ -11,7 +9,7 @@ type Proyek struct {
 	Nama     string
 	Klien    string
 	Prioritas string // "tinggi", "sedang", "rendah"
-	Tanggal  string // Format: YYYY-MM-DD
+	Tanggal  string // YYYY-MM-DD
 	Status   string // "sudah" atau "belum"
 }
 
@@ -30,7 +28,6 @@ func swap(a, b *Proyek) {
 }
 
 // CRUD
-
 func tambahProyek(p Proyek) {
 	if n < MAX {
 		data[n] = p
@@ -53,8 +50,9 @@ func tampilkanData() {
 	fmt.Println("\n--------------------------------------------")
 		fmt.Println("1. Cari berdasarkan ID")
 		fmt.Println("2. Cari berdasarkan nama proyek")
-		fmt.Println("3. Urutkan berdasarkan prioritas")
+		fmt.Println("3. Urutkan berdasarkan status")
 		fmt.Println("4. Urutkan berdasarkan tanggal")
+		fmt.Println("0. Keluar")
 		fmt.Println("Pilih: ")
 		fmt.Scan(&pilihan1)
 
@@ -81,7 +79,7 @@ func tampilkanData() {
 		var asc string
 		fmt.Print("Urutkan naik? (y/n): ")
 		fmt.Scan(&asc)
-		selectionSortPrioritas(asc == "y")
+		selectionSortStatus(asc == "y")
 		tampilkanData()
 	case 4:
 		var asc string
@@ -93,7 +91,8 @@ func tampilkanData() {
 }
 
 func editProyek(id string) {
-	idx := sequentialSearchID(id)
+	var idx int
+	idx = sequentialSearchID(id)
 	if idx != -1 {
 		fmt.Println("Masukkan data baru:")
 		fmt.Print("Nama Proyek: ")
@@ -113,9 +112,10 @@ func editProyek(id string) {
 }
 
 func hapusProyek(id string) {
-	idx := sequentialSearchID(id)
+	var idx, i int
+	idx = sequentialSearchID(id)
 	if idx != -1 {
-		for i := idx; i < n-1; i++ {
+		for i = idx; i < n-1; i++ {
 			data[i] = data[i+1]
 		}
 		n--
@@ -127,7 +127,8 @@ func hapusProyek(id string) {
 
 // Search
 func sequentialSearchID(id string) int {
-	for i := 0; i < n; i++ {
+	var i int
+	for i = 0; i < n; i++ {
 		if data[i].ID == id {
 			return i
 		}
@@ -137,10 +138,11 @@ func sequentialSearchID(id string) int {
 
 func binarySearchNama(nama string) int {
 	selectionSortNama(true) // pastikan urut
-	low := 0
-	high := n - 1
+	var low, high, mid int
+	low = 0
+	high = n - 1
 	for low <= high {
-		mid := (low + high) / 2
+		mid = (low + high) / 2
 		if data[mid].Nama == nama {
 			return mid
 		} else if data[mid].Nama < nama {
@@ -153,10 +155,11 @@ func binarySearchNama(nama string) int {
 }
 
 // Sort
-func selectionSortPrioritas(asc bool) {
-	for i := 0; i < n-1; i++ {
-		idx := i
-		for j := i + 1; j < n; j++ {
+func selectionSortStatus(asc bool) {
+	var i, j, idx int
+	for i = 0; i < n-1; i++ {
+		idx = i
+		for j = i + 1; j < n; j++ {
 			if (asc && data[j].Prioritas < data[idx].Prioritas) || (!asc && data[j].Prioritas > data[idx].Prioritas) {
 				idx = j
 			}
@@ -166,9 +169,10 @@ func selectionSortPrioritas(asc bool) {
 }
 
 func insertionSortTanggal(asc bool) {
-	for i := 1; i < n; i++ {
+	var i, j int
+	for i = 1; i < n; i++ {
 		key := data[i]
-		j := i - 1
+		j = i - 1
 		for j >= 0 && ((asc && data[j].Tanggal > key.Tanggal) || (!asc && data[j].Tanggal < key.Tanggal)) {
 			data[j+1] = data[j]
 			j--
@@ -178,10 +182,10 @@ func insertionSortTanggal(asc bool) {
 }
 
 func selectionSortNama(asc bool) {
-	
-	for i := 0; i < n-1; i++ {
-		idx := i
-		for j := i + 1; j < n; j++ {
+	var i, j, idx int
+	for i = 0; i < n-1; i++ {
+		idx = i
+		for j = i + 1; j < n; j++ {
 			if (asc && data[j].Nama < data[idx].Nama) || (!asc && data[j].Nama > data[idx].Nama) {
 				idx = j
 			}
@@ -190,10 +194,10 @@ func selectionSortNama(asc bool) {
 	}
 }
 
-func menu() {
+func main() {
 	var pilihan int
 	var inputID string
-	for pilihan != 9 {
+	for pilihan != 5 {
 		fmt.Println("----------------------------------------------")
 		fmt.Println("\n============= Aplikasi Tugasin =============")
 		fmt.Println("\n--------------------------------------------")
@@ -215,7 +219,7 @@ func menu() {
 			fmt.Scan(&p.Nama)
 			fmt.Print("Klien: ")
 			fmt.Scan(&p.Klien)
-			fmt.Print("Prioritas: ")
+			fmt.Print("Prioritas (Tinggi/Sedang/Rendah): ")
 			fmt.Scan(&p.Prioritas)
 			fmt.Print("Tanggal (YYYY-MM-DD): ")
 			fmt.Scan(&p.Tanggal)
@@ -233,14 +237,9 @@ func menu() {
 			fmt.Scan(&inputID)
 			hapusProyek(inputID)
 		case 5:
-			fmt.Println("Thank You")
+			fmt.Println("Thank You !!!")
 		default:
 			fmt.Println("Pilihan tidak valid")
 		}
 	}
 }
-
-func main() {
-	menu()
-}
-
