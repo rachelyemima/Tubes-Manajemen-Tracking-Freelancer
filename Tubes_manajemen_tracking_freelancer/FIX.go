@@ -2,22 +2,18 @@ package main
 
 import "fmt"
 
-const MAX = 100
-
+const MAX = 15
 type Proyek struct {
 	ID       string
 	Nama     string
 	Klien    string
-	Prioritas string // "tinggi", "sedang", "rendah"
+	Prioritas string // "Tinggi", "Sedang", "Rendah"
 	Tanggal  string // YYYY-MM-DD
 	Status   string // "sudah" atau "belum"
 }
 
 var data [MAX]Proyek
 var n int
-
-
-//function tambahan
 
 
 // Utility
@@ -41,13 +37,15 @@ func tambahProyek(p Proyek) {
 func tampilkanData() {
 	var pilihan1 int
 	var inputID, inputNama string
-	fmt.Println("Data Proyek:")
+	fmt.Println("____________________________________________")
+	fmt.Println("\n************** Data Proyek **************")
+	fmt.Println("___________________________________________")
 	for i := 0; i < n; i++ {
-		fmt.Printf("%d. ID: %s | Nama Proyek: %s | Klien: %s | Prioritas: %s | Tanggal: %s | Status: %s\n", i+1, data[i].ID, data[i].Nama, data[i].Klien, data[i].Prioritas, data[i].Tanggal, data[i].Status)
+		fmt.Printf("%-3d | ID: %-5s | Nama Proyek: %-20s | Klien: %-15s | Prioritas: %-8s | Tanggal: %-10s | Status: %-6s\n", i+1, data[i].ID, data[i].Nama, data[i].Klien, data[i].Prioritas, data[i].Tanggal, data[i].Status)
 	}
-	fmt.Println("----------------------------------------------")
+	fmt.Println("............................................")
 	fmt.Println("\n============= Cari/Urutkan =============")
-	fmt.Println("\n--------------------------------------------")
+	fmt.Println("\n............................................")
 		fmt.Println("1. Cari berdasarkan ID")
 		fmt.Println("2. Cari berdasarkan nama proyek")
 		fmt.Println("3. Urutkan berdasarkan status")
@@ -137,7 +135,7 @@ func sequentialSearchID(id string) int {
 }
 
 func binarySearchNama(nama string) int {
-	selectionSortNama(true) // pastikan urut
+	selectionSortNama(true) 
 	var low, high, mid int
 	low = 0
 	high = n - 1
